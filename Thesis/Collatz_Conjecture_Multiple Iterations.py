@@ -115,10 +115,9 @@ def main():
         else:
             break
 
-    for number in range(multiple, multiple*1000+1, multiple): 
+    for number in range(multiple, multiple*100000+1, multiple): 
         iterations = 0
         ori_number = number
-        iterations_count = 0
         number = collatz(number)
         while number != 1:
             number = collatz(number)

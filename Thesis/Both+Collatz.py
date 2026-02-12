@@ -194,17 +194,17 @@ def multiple_first_100000(all_numbers,means,medians, ranges, LOBF_slope, multipl
 
     LOBF_slope[multiple] = slope    
     
-    print()
-    print(f"Iterations Statistics for {multiple}")
-    print(f"Mean: {mean} ")
-    print(f"Median: {median} ")
-    print(f"Range: {rang} ")
-    print(f"Equation: y = {slope:.4f}x + {intercept:.2f}")
-    print(f"Correlation coefficient (r): {r_value:.4f}")
+    #print()
+    #print(f"Iterations Statistics for {multiple}")
+    #print(f"Mean: {mean} ")
+    #print(f"Median: {median} ")
+    #print(f"Range: {rang} ")
+   # print(f"Equation: y = {slope:.4f}x + {intercept:.2f}")
+   # print(f"Correlation coefficient (r): {r_value:.4f}")
     
     return all_numbers,means,medians, ranges, LOBF_slope
 
-def create_graphs(means, medians, ranges, LOBF_slope):
+def create_graphs(means, medians, ranges, LOBF_slope,title):
     '''
     Description: creates four graphs using the means, medians and ranges for all multiples 
     Args:
@@ -224,7 +224,7 @@ def create_graphs(means, medians, ranges, LOBF_slope):
     
     # Create a figure with 4 subplots (2x2 grid)
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-    fig.suptitle('Statistics Across Different Multiples', fontsize=16, fontweight='bold')
+    fig.suptitle(title, fontsize=16, fontweight='bold')
     
     # Graph 1: Means
     axes[0, 0].plot(multiples, mean_values, marker='o', linestyle='-', linewidth=2, markersize=8, color='blue')
@@ -234,7 +234,7 @@ def create_graphs(means, medians, ranges, LOBF_slope):
     axes[0, 0].grid(True, alpha=0.3)
     
     # Graph 2: Medians
-    axes[0, 1].plot(multiples, median_values, marker='s', linestyle='-', linewidth=2, markersize=8, color='green')
+    axes[0, 1].plot(multiples, median_values, marker='o', linestyle='-', linewidth=2, markersize=8, color='green')
     axes[0, 1].set_xlabel('Multiple', fontsize=11)
     axes[0, 1].set_ylabel('Median Iterations', fontsize=11)
     axes[0, 1].set_title('Median Iterations vs Multiple', fontsize=12)
@@ -258,16 +258,35 @@ def create_graphs(means, medians, ranges, LOBF_slope):
     plt.tight_layout()
     plt.show()
 
+def stats_to_csv(means, medians, ranges, LOBF_slope, filename='collatz_stats.csv'):
+    '''
+    Description: Saves all statistics to CSV using pandas
+    '''
+
+    # Combine all dictionaries into a DataFrame
+    all_dictionaries = pd.DataFrame({
+        'multiple': list(means.keys()),
+        'mean': list(means.values()),
+        'median': list(medians.values()),
+        'range': list(ranges.values()),
+        'slope': list(LOBF_slope.values())
+    })
+    
+    all_dictionaries.to_csv(filename, index=False)
+
 def one(all_numbers):
     means={}
     medians={}
     ranges={}
     LOBF_slope={}
 
-    for i in range(1, 101):                                                                                           #goes through every multiple
+    for i in range(1, 129,2):                                                                                           #goes through every multiple
         all_numbers,means,medians, ranges, LOBF_slope = multiple_first_100000(all_numbers,means,medians, ranges, LOBF_slope, 0+i)
 
-    create_graphs(means, medians, ranges, LOBF_slope)
+    title = ("First 100,000 multiples for all multiples 1-128 Odds")
+    create_graphs(means, medians, ranges, LOBF_slope,title)
+    stats_to_csv(means, medians, ranges, LOBF_slope, 'first_100000_multiples_Odds.csv')
+
 
 def two(all_numbers):
     all_numbers = {}
@@ -276,14 +295,16 @@ def two(all_numbers):
     ranges={}
     LOBF_slope={}
 
-    for i in range(1, 101):                                                                                           #goes through every multiple
+    for i in range(1, 129,2):                                                                                           #goes through every multiple
         all_numbers,means,medians, ranges, LOBF_slope = multiple_to_1000000(all_numbers,means,medians, ranges, LOBF_slope, 0+i)  
-
-    create_graphs(means, medians, ranges, LOBF_slope)
+    
+    title = ("Multiples 1-128 up to 10,000,000 Odds") 
+    create_graphs(means, medians, ranges, LOBF_slope,title)
+    stats_to_csv(means, medians, ranges, LOBF_slope, 'multiples_to_10000000_Odds.csv')
 
 def main():
     all_numbers = {}
-    #one(all_numbers)
+    one(all_numbers)
     two(all_numbers)
     
 main()
