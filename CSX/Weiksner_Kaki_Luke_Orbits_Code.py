@@ -81,7 +81,7 @@ def distance_to_host(planet):
     dth = (planet.X[-1]**2 + planet.Y[-1]**2)**.5
     return dth
 
-def add_planets(planet1, planet2,combined_radius):
+def combine_planet(planet1, planet2,combined_radius):
     mass = planet1.mass + planet2.mass
     planet1.Vx = (planet1.mass * planet1.Vx + planet2.mass * planet2.Vx) / mass
     planet1.Vy = (planet1.mass * planet1.Vy + planet2.mass * planet2.Vy) / mass
@@ -92,7 +92,7 @@ def add_planets(planet1, planet2,combined_radius):
     planet2.current = False 
     collisions.append(f"{planet1.name} merged")
 
-def check_collisions():
+def check_colisions():
     current = []
 
     for i in planets:
@@ -104,7 +104,7 @@ def check_collisions():
             planet1, planet2 = current[i], current[j]
             combined_radius = planet1.radius + planet2.radius
             if distance(planet1, planet2) < (combined_radius):
-                add_planets(planet1, planet2,combined_radius)
+                combine_planets(planet1, planet2,combined_radius)
 
     for planetss in current:
         radius_together = planetss.radius + host_radius
@@ -133,7 +133,7 @@ def animate(i):
         if planet.current:
             planet.each_frame()
 
-    check_collisions()
+    check_colisions()
     plt.plot(0,0, markersize=12, color='Black', label=(f"e=eccentricity, T:Period, a:Semi-major axis,v:velocity, r:radius, m:mass"))
     for planet in planets:
         if planet.current:
