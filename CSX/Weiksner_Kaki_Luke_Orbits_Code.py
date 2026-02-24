@@ -81,13 +81,13 @@ def distance_to_host(planet):
     dth = (planet.X[-1]**2 + planet.Y[-1]**2)**.5
     return dth
 
-def combine_planet(planet1, planet2,combined_radius):
+def combine_planets(planet1, planet2,combined_radius):
     mass = planet1.mass + planet2.mass
     planet1.Vx = (planet1.mass * planet1.Vx + planet2.mass * planet2.Vx) / mass
     planet1.Vy = (planet1.mass * planet1.Vy + planet2.mass * planet2.Vy) / mass
     planet1.mass = mass
-    planet1.name = f"{planet1.name}+{planet2.name}"
-    planet1.color = 'purple'
+    planet1.name = (f"{planet1.name}+{planet2.name}")
+    planet1.color =("purple")
     planet1.radius = combined_radius
     planet2.current = False 
     collisions.append(f"{planet1.name} merged")
@@ -113,6 +113,7 @@ def check_colisions():
             planetss.current = False
             planetss.X=[]
             planetss.Y=[]
+            print("Hit")
             collisions.append(f"{planetss.name} fell into the host star")
 
 
@@ -120,9 +121,9 @@ trail = True
 collisions = []
 
 planets = [
-    Planet(xo=3E+6, yo=0, vxo=0, vyo=3000, mass=5.97E20, color='red', name='Planet A',radius = 6.371E+4),
-    Planet(xo=5E+6, yo=0, vxo=0, vyo=7355, mass=5.97E20, color='blue', name='Planet B',radius = 6.371E+4),
-    Planet(xo=3.1E+6, yo=0, vxo=0, vyo=100, mass=5.97E20, color='green', name='Planet C',radius = 6.371E+4)
+    Planet(xo=3E+6, yo=0, vxo=0, vyo=3000, mass=5.97E20, color="red", name="Planet A",radius = 6.371E+4),
+    Planet(xo=5E+6, yo=0, vxo=0, vyo=7355, mass=5.97E20, color="blue", name="Planet B",radius = 6.371E+4),
+    Planet(xo=3.1E+6, yo=0, vxo=0, vyo=100, mass=5.97E20, color="green", name="Planet C",radius = 6.371E+4)
 ]
 
 
@@ -134,25 +135,24 @@ def animate(i):
             planet.each_frame()
 
     check_colisions()
-    plt.plot(0,0, markersize=12, color='Black', label=(f"e=eccentricity, T:Period, a:Semi-major axis,v:velocity, r:radius, m:mass"))
+    plt.plot(0,0, markersize=12, color="Black", label=(f"e=eccentricity, T:Period, a:Semi-major axis,v:velocity, r:radius, m:mass"))
     for planet in planets:
         if planet.current:
             if trail:
-                plt.plot(planet.X, planet.Y, '-', linewidth=1, color=planet.color)
-            
-          plt.plot(planet.X[-1], planet.Y[-1], marker="o", markersize=8, color=planet.color, label=planet.label())
+                plt.plot(planet.X, planet.Y, "-", linewidth=1, color=planet.color)
+            plt.plot(planet.X[-1], planet.Y[-1], marker="o", markersize=8, color=planet.color, label=planet.label())
     
-    plt.plot(0, 0, marker="o", markersize=12, color='yellow', label=(f"Hostplanet, r: {host_radius:.1e}, m:{mhost:.1e}"))
+    plt.plot(0, 0, marker="o", markersize=12, color="yellow", label=(f"Hostplanet, r: {host_radius:.1e}, m:{mhost:.1e}"))
 
     count = 0 
-    ax.text(0.02, .98, "Last three Collisions:",transform=ax.transAxes, fontsize=8, color='black', fontweight = 'bold')
+    ax.text(0.02, .98, "Last three Collisions:",transform=ax.transAxes, fontsize=8, color="black", fontweight = "bold")
     for event in collisions[-3:]:
-        ax.text(0.02, .96 - count*0.02, event,transform=ax.transAxes, fontsize=8, color='black')
+        ax.text(0.02, .96 - count*0.02, event,transform=ax.transAxes, fontsize=8, color="black")
         count +=1
 
-    plt.title('Orbit Simulation')
+    plt.title("Orbit Simulation")
+    plt.legend(loc="upper right", fontsize=7)
     plt.axis('equal')
-    plt.legend(loc='upper right', fontsize=7)
 
 
 fig, ax = plt.subplots()
